@@ -40,7 +40,8 @@ class Category(models.Model):
         return self.category_name
 
 class Project(models.Model):
-    category=models.ForeignKey(Category,on_delete=models.CASCADE)
+    category=models.ForeignKey(Category,on_delete=models.CASCADE,
+                               related_name='project')
     title=models.CharField(max_length=100)
     description=models.TextField()
     budget=models.PositiveSmallIntegerField()
@@ -53,15 +54,15 @@ class Project(models.Model):
     )
     status=models.CharField(choices=STATUS_CHOICES,max_length=20)
     skills_required=models.ManyToManyField(Skill)
-    client=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+    client=models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name='client')
     created_date=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
 
 class Offer(models.Model):
-    project=models.ForeignKey(Project,on_delete=models.CASCADE)
-    freelancer=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+    project=models.ForeignKey(Project,on_delete=models.CASCADE,related_name='offer')
+    freelancer=models.ForeignKey(UserProfile,on_delete=models.CASCADE,)
     message=models.TextField()
     proposed_budget=models.PositiveSmallIntegerField()
     proposed_deadline=models.DateField()
@@ -71,7 +72,7 @@ class Offer(models.Model):
         return self.message
 
 class Review(models.Model):
-    project=models.ForeignKey(Project,on_delete=models.CASCADE)
+    project=models.ForeignKey(Project,on_delete=models.CASCADE,related_name='comment')
     reviewer=models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name='reviewer')
     target=models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name='target')
     rating=models.PositiveSmallIntegerField(choices=[(i,str(i)) for i in range(1, 5)])

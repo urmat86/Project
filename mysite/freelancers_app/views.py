@@ -1,7 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets,generics
 from .models import *
-from .serializers import (SkillSerializer,UserProfileSerializer,SocialNetworkSerializer,
-                          CategorySerializer,ProjectSerializer,OfferSerializer,ReviewSerializer)
+from .serializers import (SkillSerializer,UserProfileSerializer,SocialNetworkSerializer,CategoryDetailSerializer,
+                          CategoryListSerializer,ProjectListSerializer,OfferSerializer,ReviewSerializer,
+                          ProjectDetailSerializer)
 
 
 class SkillViewSet(viewsets.ModelViewSet):
@@ -19,14 +20,22 @@ class SocialNetworkViewSet(viewsets.ModelViewSet):
     serializer_class = SocialNetworkSerializer
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    serializer_class = CategoryListSerializer
+
+class CategoryDetailAPIView(generics.RetrieveAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategoryDetailSerializer
 
 
-class ProjectViewSet(viewsets.ModelViewSet):
+class ProjectDetailAPIView(generics.RetrieveAPIView):
     queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
+    serializer_class = ProjectDetailSerializer
+
+class ProjectListAPIView(generics.ListAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectListSerializer
 
 
 class OfferViewSet(viewsets.ModelViewSet):
